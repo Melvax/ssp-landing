@@ -1,16 +1,23 @@
+import EventsCarousel from "@/components/events-carousel"
 import Header from "@/components/header"
 import HeroContent from "@/components/hero-content"
-import MembersSection from "@/components/members-section"
 import ShaderBackground from "@/components/shader-background"
+import { getUpcomingEvents } from "@/lib/events"
 
-export default function ShaderShowcase() {
+export const revalidate = 60
+
+export default async function ShaderShowcase() {
+  const events = await getUpcomingEvents()
+
   return (
     <ShaderBackground>
-      <div className="relative h-screen">
+      <div className="relative min-h-screen flex flex-col">
         <Header />
-        <HeroContent />
+        <div className="flex flex-1 flex-col w-full max-w-7xl mx-auto lg:grid lg:grid-cols-2 lg:items-end">
+          <HeroContent />
+          <EventsCarousel events={events} />
+        </div>
       </div>
-      <MembersSection />
     </ShaderBackground>
   )
 }

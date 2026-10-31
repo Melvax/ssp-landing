@@ -12,13 +12,12 @@ export default function Header() {
 
   const navLinks = [
     { label: "Ateliers", action: () => setIsAteliersOpen(true) },
-    { label: "Événements", href: "#" },
-    { label: "Communauté", href: "#" },
+    { label: "Événements", href: "#evenements" },
   ]
 
   return (
     <>
-      <header className="relative z-50 flex items-center justify-between p-6 md:p-8">
+      <header className="relative z-50 flex items-center justify-between w-full max-w-7xl mx-auto p-6 md:p-8">
         {/* Logo / Title */}
         <div className="flex items-center relative z-50">
           <span className="text-white text-lg md:text-xl font-medium tracking-tight">

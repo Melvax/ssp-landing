@@ -1,0 +1,35 @@
+rules_version = '2';
+
+// ATTENTION : ce projet Firebase est partagé avec l'app newssp et un déploiement
+// remplace toutes les règles. Fusionner avec les règles en ligne avant de déployer.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    function isValidEvent(event) {
+      return event.keys().hasOnly(['title', 'description', 'startsAt', 'image', 'imagePath', 'signupUrl',
+          'price', 'memberDiscountPercent', 'published'])
+        && event.keys().hasAll(['title', 'description', 'startsAt', 'image', 'imagePath', 'published'])
+        && event.title is string && event.title.size() > 0 && event.title.size() <= 120
+        && event.description is string && event.description.size() > 0 && event.description.size() <= 5000
+        && event.startsAt is timestamp
+        && event.image is string && event.image.matches('^https?://.+')
+        && event.imagePath is string && event.imagePath.matches('^landing-events/[^/]+$')
+        && event.published is bool
+        && (!('signupUrl' in event) || event.signupUrl == null
+          || (event.signupUrl is string && event.signupUrl.matches('^https?://.+')))
+        && (!('price' in event) || event.price == null || (event.price is number && event.price >= 0))
+        && (!('memberDiscountPercent' in event) || event.memberDiscountPercent == null
+          || (event.memberDiscountPercent is number
+            && event.memberDiscountPercent > 0 && event.memberDiscountPercent <= 100));
+    }
+
+    match /landingEvents/{eventId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update: if isAdmin() && isValidEvent(request.resource.data);
+      allow delete: if isAdmin();
+    }
+  }
+}

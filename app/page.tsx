@@ -13,7 +13,7 @@ export default async function ShaderShowcase() {
     <ShaderBackground>
       <div className="relative min-h-screen flex flex-col">
         <Header />
-        <div className="flex flex-1 flex-col w-full max-w-7xl mx-auto lg:grid lg:grid-cols-2 lg:items-end">
+        <div className="flex flex-1 flex-col justify-end w-full max-w-7xl mx-auto lg:grid lg:grid-cols-2 lg:items-end">
           <HeroContent />
           <EventsCarousel events={events} />
         </div>

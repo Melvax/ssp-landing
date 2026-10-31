@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { auth } from "@/lib/firebase-admin-client"
 
+const ADMIN_UID = "OXJvsXVGa6fqXwmbbmjoYntZYay2"
+
 function LoginForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -74,7 +76,7 @@ export default function AdminApp() {
       // Force la lecture du jeton pour voir tout de suite un accès admin qui vient d'être donné.
       const token = await nextUser?.getIdTokenResult(true)
       setUser(nextUser)
-      setIsAdmin(token?.claims.admin === true)
+      setIsAdmin(nextUser?.uid === ADMIN_UID || token?.claims.admin === true)
       setIsReady(true)
     })
   }, [])

@@ -1,13 +1,17 @@
 rules_version = '2';
 
-// ATTENTION : ce projet Firebase est partagé avec les apps Flutter et un déploiement
-// remplace toutes les règles. Fusionner avec les règles en ligne avant de déployer.
+// Projet partagé avec les apps Flutter : un déploiement remplace toutes les règles.
 service firebase.storage {
   match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null
+        && (request.auth.uid == 'OXJvsXVGa6fqXwmbbmjoYntZYay2' || request.auth.token.admin == true);
+    }
+
     match /landing-events/{fileName} {
       allow read: if true;
-      allow delete: if request.auth != null && request.auth.token.admin == true;
-      allow create, update: if request.auth != null && request.auth.token.admin == true
+      allow delete: if isAdmin();
+      allow create, update: if isAdmin()
         && request.resource.contentType.matches('image/(jpeg|png|webp)')
         && request.resource.size < 5 * 1024 * 1024;
     }

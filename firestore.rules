@@ -1,11 +1,11 @@
 rules_version = '2';
 
-// ATTENTION : ce projet Firebase est partagé avec l'app newssp et un déploiement
-// remplace toutes les règles. Fusionner avec les règles en ligne avant de déployer.
+// Projet partagé avec les apps Flutter : un déploiement remplace toutes les règles.
 service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
-      return request.auth != null && request.auth.token.admin == true;
+      return request.auth != null
+        && (request.auth.uid == 'OXJvsXVGa6fqXwmbbmjoYntZYay2' || request.auth.token.admin == true);
     }
 
     function isValidEvent(event) {

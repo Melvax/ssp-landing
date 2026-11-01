@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "start": "next start",
     "emulators": "firebase emulators:start --project demo-supersample",
-    "set-admin": "node scripts/set-admin.mjs"
+    "set-role": "node scripts/set-role.mjs"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",

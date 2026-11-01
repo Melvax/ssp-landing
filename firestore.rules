@@ -5,7 +5,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
       return request.auth != null
-        && (request.auth.uid == 'OXJvsXVGa6fqXwmbbmjoYntZYay2' || request.auth.token.admin == true);
+        && (request.auth.uid == 'OXJvsXVGa6fqXwmbbmjoYntZYay2' || request.auth.token.role == 'admin');
     }
 
     function isValidEvent(event) {

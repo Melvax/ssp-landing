@@ -32,8 +32,9 @@ export default function ShaderBackground({ children }: ShaderBackgroundProps) {
   }, [])
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-black relative">
-      <div className="fixed inset-0 z-0">
+    <div ref={containerRef} className="min-h-dvh bg-black relative">
+      {/* h-lvh : le fond doit aussi passer sous la barre d'outils de Safari sur iPhone. */}
+      <div className="fixed inset-x-0 top-0 h-lvh z-0">
         {/* SVG Filters */}
         <svg className="absolute inset-0 w-0 h-0">
           <defs>
@@ -75,7 +76,7 @@ export default function ShaderBackground({ children }: ShaderBackgroundProps) {
         />
       </div>
 
-      <div className="relative z-10 min-h-screen">
+      <div className="relative z-10 min-h-dvh">
         {children}
       </div>
     </div>

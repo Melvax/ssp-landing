@@ -105,7 +105,7 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
           <CarouselContent>
             {events.map((event) => (
               <CarouselItem key={event.id}>
-                <article className="group relative grid md:grid-cols-2 lg:flex lg:flex-col h-56 md:h-64 lg:h-96 rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 bg-black/40 backdrop-blur-md transition-colors duration-200">
+                <article className="group relative grid md:grid-cols-2 lg:flex lg:flex-col h-[clamp(9rem,26dvh,14rem)] md:h-[clamp(9rem,26dvh,16rem)] lg:h-96 rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 bg-black/40 backdrop-blur-md transition-colors duration-200">
                   <button
                     onClick={(click) => openOverlay(event, click)}
                     aria-label={`Voir le détail de ${event.title}`}
@@ -130,7 +130,7 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
                     <div className="mb-2 empty:hidden">
                       <EventPrice event={event} />
                     </div>
-                    <p className="text-white/70 text-xs md:text-sm font-light leading-relaxed line-clamp-2">
+                    <p className="text-white/70 text-xs md:text-sm font-light leading-relaxed line-clamp-2 max-lg:[@media(max-height:620px)]:hidden">
                       {event.description}
                     </p>
                   </div>

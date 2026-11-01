@@ -22,7 +22,7 @@ export default function HeroContent() {
           <span className="font-light tracking-tight text-white">Beatmakers à Paris</span>
         </h1>
 
-        <p className="text-xs font-light text-white/70 mb-4 leading-relaxed">
+        <p className="text-xs font-light text-white/70 mb-4 leading-relaxed [@media(max-height:620px)]:hidden">
           Rejoins SuperSample Paris — un collectif de producteurs, beatmakers et sound designers. Ateliers
           hebdomadaires, sessions live, échanges de samples et événements communautaires pour faire évoluer ton art.
         </p>

@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import PulsingCircle from "./pulsing-circle"
 
 export default function HeroContent() {
@@ -27,13 +28,24 @@ export default function HeroContent() {
           hebdomadaires, sessions live, échanges de samples et événements communautaires pour faire évoluer ton art.
         </p>
 
-        <div className="flex items-center gap-4 flex-wrap">
-          <button className="relative pl-14 pr-8 py-3 rounded-full bg-white text-black font-normal text-xs transition-all duration-200 hover:bg-white/90 cursor-pointer overflow-hidden group">
+        <div className="flex items-center gap-3 md:gap-4 flex-wrap">
+          <Link
+            href="/connexion"
+            className="px-6 md:px-8 py-3 rounded-full bg-transparent border border-white/30 text-white font-normal text-xs transition-all duration-200 hover:bg-white/10 hover:border-white/50 cursor-pointer"
+          >
+            Connexion
+          </Link>
+          <a
+            href="https://www.helloasso.com/associations/super-sample-paris/adhesions/formulaire-d-adhesion-ssp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative pl-14 pr-8 py-3 rounded-full bg-white text-black font-normal text-xs transition-all duration-200 hover:bg-white/90 cursor-pointer overflow-hidden group"
+          >
             <div className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10">
               <PulsingCircle className="w-full h-full" />
             </div>
             <span className="relative z-10">Rejoindre le Collectif</span>
-          </button>
+          </a>
         </div>
       </div>
     </main>

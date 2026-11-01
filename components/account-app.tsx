@@ -2,10 +2,11 @@
 
 import Link from "next/link"
 import { signOut } from "firebase/auth"
+import AccountTracks from "@/components/account-tracks"
 import LoginForm from "@/components/login-form"
 import { Button } from "@/components/ui/button"
 import { auth } from "@/lib/firebase-admin-client"
-import { ROLE_LABELS } from "@/lib/roles"
+import { isStaff, ROLE_LABELS } from "@/lib/roles"
 import { useAccount } from "@/lib/use-account"
 
 export default function AccountApp() {
@@ -18,18 +19,23 @@ export default function AccountApp() {
           ← Retour au site
         </Link>
 
-        {isReady && !user && <LoginForm title="Connexion" />}
+        {isReady && !user && <LoginForm title="Connexion" allowSignup />}
 
         {user && role && (
-          <div className="mt-24 space-y-4">
-            <h1 className="text-3xl font-light tracking-tight instrument">Mon compte</h1>
-            <p className="text-white/60 text-sm truncate">{user.email}</p>
-            <p className="text-sm">Rôle : {ROLE_LABELS[role]}</p>
-            {role === "admin" && (
-              <Button asChild className="w-full">
-                <Link href="/admin">Administration</Link>
-              </Button>
-            )}
+          <div className="mt-12 space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-3xl font-light tracking-tight instrument">Mon espace</h1>
+              <p className="text-white/60 text-sm truncate">{user.email}</p>
+              <p className="text-sm">Rôle : {ROLE_LABELS[role]}</p>
+              {isStaff(role) && (
+                <Button asChild className="w-full">
+                  <Link href="/admin">{role === "admin" ? "Administration" : "Espace host"}</Link>
+                </Button>
+              )}
+            </div>
+
+            <AccountTracks uid={user.uid} />
+
             <Button variant="ghost" className="w-full" onClick={() => signOut(auth)}>
               Se déconnecter
             </Button>

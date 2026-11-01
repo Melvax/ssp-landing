@@ -8,6 +8,26 @@ service cloud.firestore {
         && (request.auth.uid == 'OXJvsXVGa6fqXwmbbmjoYntZYay2' || request.auth.token.role == 'admin');
     }
 
+    function isStaff() {
+      return isAdmin() || (request.auth != null && request.auth.token.role == 'host');
+    }
+
+    function isValidProfile(profile) {
+      return profile.keys().hasOnly(['artistName', 'socials'])
+        && profile.artistName is string && profile.artistName.size() > 0 && profile.artistName.size() <= 80
+        && profile.socials is string && profile.socials.size() > 0 && profile.socials.size() <= 300;
+    }
+
+    function isValidTrack(track) {
+      return track.keys().hasOnly(['uid', 'title', 'artistName', 'socials', 'audioPath', 'createdAt'])
+        && track.uid == request.auth.uid
+        && track.title is string && track.title.size() > 0 && track.title.size() <= 120
+        && track.artistName is string && track.artistName.size() > 0 && track.artistName.size() <= 80
+        && track.socials is string && track.socials.size() <= 300
+        && track.audioPath is string && track.audioPath.matches('^landing-tracks/' + request.auth.uid + '/[^/]+$')
+        && track.createdAt == request.time;
+    }
+
     function isValidEvent(event) {
       return event.keys().hasOnly(['title', 'description', 'startsAt', 'image', 'imagePath', 'signupUrl',
           'price', 'memberDiscountPercent', 'published'])
@@ -30,6 +50,17 @@ service cloud.firestore {
       allow read: if resource.data.published == true || isAdmin();
       allow create, update: if isAdmin() && isValidEvent(request.resource.data);
       allow delete: if isAdmin();
+    }
+
+    match /landingProfiles/{uid} {
+      allow read: if isStaff() || (request.auth != null && request.auth.uid == uid);
+      allow write: if request.auth != null && request.auth.uid == uid && isValidProfile(request.resource.data);
+    }
+
+    match /landingTracks/{trackId} {
+      allow read: if isStaff() || (request.auth != null && resource.data.uid == request.auth.uid);
+      allow create: if request.auth != null && isValidTrack(request.resource.data);
+      allow delete: if isAdmin() || (request.auth != null && resource.data.uid == request.auth.uid);
     }
   }
 }

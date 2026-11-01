@@ -53,10 +53,10 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
     <section
       id="evenements"
       aria-label="Prochains événements"
-      className="relative z-20 order-first lg:order-none flex flex-1 lg:flex-none items-center w-full px-6 md:px-8 py-4 lg:pt-0 lg:pb-8 lg:pl-0"
+      className="relative z-20 order-first flex flex-1 items-center justify-center w-full px-6 md:px-8 py-4"
     >
       <div
-        className="w-full"
+        className="w-full lg:max-w-3xl"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onFocusCapture={() => setIsPaused(true)}
@@ -105,13 +105,13 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
           <CarouselContent>
             {events.map((event) => (
               <CarouselItem key={event.id}>
-                <article className="group relative grid md:grid-cols-2 lg:flex lg:flex-col h-[clamp(9rem,26dvh,14rem)] md:h-[clamp(9rem,26dvh,16rem)] lg:h-96 rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 bg-black/40 backdrop-blur-md transition-colors duration-200">
+                <article className="group relative grid md:grid-cols-2 h-[clamp(9rem,26dvh,14rem)] md:h-[clamp(9rem,26dvh,16rem)] lg:h-[clamp(9rem,calc(100dvh-30rem),24rem)] rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 bg-black/40 backdrop-blur-md transition-colors duration-200">
                   <button
                     onClick={(click) => openOverlay(event, click)}
                     aria-label={`Voir le détail de ${event.title}`}
                     className="absolute inset-0 z-10 rounded-2xl cursor-pointer"
                   />
-                  <div className="absolute inset-0 md:relative lg:flex-1 lg:min-h-0 overflow-hidden">
+                  <div className="absolute inset-0 md:relative overflow-hidden">
                     <img
                       src={event.image}
                       alt=""
@@ -130,7 +130,7 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
                     <div className="mb-2 empty:hidden">
                       <EventPrice event={event} />
                     </div>
-                    <p className="text-white/70 text-xs md:text-sm font-light leading-relaxed line-clamp-2 max-lg:[@media(max-height:620px)]:hidden">
+                    <p className="text-white/70 text-xs md:text-sm font-light leading-relaxed line-clamp-2 [@media(max-height:700px)]:hidden">
                       {event.description}
                     </p>
                   </div>

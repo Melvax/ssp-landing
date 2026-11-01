@@ -14,7 +14,7 @@ export default async function ShaderShowcase() {
       {/* Page sur un seul écran, sauf si la fenêtre est trop basse pour tout afficher (mobile à l'horizontale). */}
       <div className="relative min-h-dvh [@media(min-height:560px)]:h-dvh [@media(min-height:560px)]:overflow-hidden flex flex-col">
         <Header />
-        <div className="flex flex-1 flex-col justify-end w-full max-w-7xl mx-auto lg:grid lg:grid-cols-2 lg:items-end">
+        <div className="flex flex-1 flex-col justify-end w-full max-w-7xl mx-auto">
           <HeroContent />
           <EventsCarousel events={events} />
         </div>

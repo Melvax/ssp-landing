@@ -14,6 +14,10 @@ export const ROLE_LABELS: Record<Role, string> = {
 // contact.supersample@gmail.com : même identifiant que dans les règles Firebase.
 const ADMIN_UID = "OXJvsXVGa6fqXwmbbmjoYntZYay2"
 
+export function isStaff(role: Role) {
+  return role === "admin" || role === "host"
+}
+
 export function getRole(user: User, token: IdTokenResult): Role {
   if (user.uid === ADMIN_UID) {
     return "admin"

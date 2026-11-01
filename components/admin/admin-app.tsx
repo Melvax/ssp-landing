@@ -2,9 +2,11 @@
 
 import { signOut } from "firebase/auth"
 import EventsDashboard from "@/components/admin/events-dashboard"
+import TracksDashboard from "@/components/admin/tracks-dashboard"
 import LoginForm from "@/components/login-form"
 import { Button } from "@/components/ui/button"
 import { auth } from "@/lib/firebase-admin-client"
+import { isStaff } from "@/lib/roles"
 import { useAccount } from "@/lib/use-account"
 
 export default function AdminApp() {
@@ -24,7 +26,8 @@ export default function AdminApp() {
           </div>
         )}
 
-        {user && role !== "admin" && <p role="alert">Ce compte n'a pas accès à l'administration.</p>}
+        {user && role && !isStaff(role) && <p role="alert">Ce compte n'a pas accès à l'administration.</p>}
+        {user && role && isStaff(role) && <TracksDashboard />}
         {user && role === "admin" && <EventsDashboard />}
       </div>
     </div>

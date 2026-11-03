@@ -72,18 +72,21 @@ export default function EventOverlay({ event, origin, onClose, onCloseAutoFocus 
                   <Dialog.Description className="text-white/80 text-sm md:text-base font-light leading-relaxed whitespace-pre-line">
                     {event.description}
                   </Dialog.Description>
+                </motion.div>
 
-                  {event.signupUrl && (
+                {/* Reste visible en bas de la fenêtre pendant la lecture de la description. */}
+                {event.signupUrl && (
+                  <div className="sticky bottom-0 z-10 px-6 md:px-8 pt-8 pb-6 bg-gradient-to-t from-neutral-950 from-60% to-transparent">
                     <a
                       href={event.signupUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block mt-6 px-8 py-3 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors"
+                      className="block w-full md:w-fit text-center px-8 py-3 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors"
                     >
                       S'inscrire
                     </a>
-                  )}
-                </motion.div>
+                  </div>
+                )}
               </motion.div>
             </Dialog.Content>
           </Dialog.Portal>

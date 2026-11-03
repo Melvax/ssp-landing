@@ -3,16 +3,15 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
-import AteliersOverlay from "./ateliers-overlay"
+import AboutOverlay from "./about-overlay"
 import { cn } from "@/lib/utils"
 
 export default function Header() {
-  const [isAteliersOpen, setIsAteliersOpen] = useState(false)
+  const [isAboutOpen, setIsAboutOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const navLinks = [
-    { label: "Ateliers", action: () => setIsAteliersOpen(true) },
-    { label: "Événements", href: "#evenements" },
+    { label: "À propos", action: () => setIsAboutOpen(true) },
     { label: "Connexion", href: "/connexion" },
   ]
 
@@ -110,7 +109,7 @@ export default function Header() {
         </AnimatePresence>
       </header>
 
-      <AteliersOverlay isOpen={isAteliersOpen} onClose={() => setIsAteliersOpen(false)} />
+      <AboutOverlay isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </>
   )
 }

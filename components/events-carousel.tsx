@@ -91,7 +91,7 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
                         aria-label={`Voir le détail de ${event.title}`}
                         className="absolute inset-0 z-10 rounded-2xl cursor-pointer"
                       />
-                      <div className="relative h-[clamp(6rem,calc(100dvh-38rem),16rem)] md:h-[clamp(6rem,calc(100dvh-36rem),20rem)] lg:h-[clamp(8rem,calc(100dvh-40rem),22rem)] rounded-2xl overflow-hidden bg-black/40">
+                      <div className="relative h-[clamp(8rem,calc(100dvh-31rem),22rem)] md:h-[clamp(8rem,calc(100dvh-30rem),26rem)] lg:h-[clamp(10rem,calc(100dvh-35rem),30rem)] rounded-2xl overflow-hidden bg-black/40">
                         <img
                           src={event.image}
                           alt=""
@@ -99,25 +99,26 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
                         />
                       </div>
 
-                      <div className="flex items-center gap-4 px-2 pt-4 pb-2 md:px-4">
-                        <div className="flex flex-col items-center justify-center shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl bg-white text-black shadow-sm">
-                          <span className="text-xs md:text-sm leading-none first-letter:uppercase">{date.weekday}</span>
-                          <span className="text-2xl md:text-3xl font-medium leading-tight">{date.day}</span>
+                      <div className="flex items-center gap-3 px-1 pt-3 pb-1 md:px-2">
+                        <div className="flex flex-col items-center justify-center shrink-0 w-12 h-12 rounded-lg bg-white text-black shadow-sm">
+                          <span className="text-[10px] leading-none first-letter:uppercase">{date.weekday}</span>
+                          <span className="text-lg font-medium leading-tight">{date.day}</span>
+                          <span className="text-[10px] leading-none">{date.month}</span>
                         </div>
                         <div className="min-w-0">
-                          <h2 className="text-white text-lg md:text-2xl font-medium tracking-tight line-clamp-1">
+                          <h2 className="text-white text-sm md:text-base font-medium tracking-tight line-clamp-1">
                             {event.title}
                           </h2>
-                          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-white/80 text-xs md:text-sm">
+                          <p className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-0.5 text-white/70 text-xs">
                             {event.location && (
                               <span className="flex items-center gap-1 min-w-0">
-                                <MapPin className="w-4 h-4 shrink-0" aria-hidden />
+                                <MapPin className="w-3.5 h-3.5 shrink-0" aria-hidden />
                                 <span className="truncate">{event.location}</span>
                               </span>
                             )}
                             <span className="flex items-center gap-1">
-                              <Clock className="w-4 h-4 shrink-0" aria-hidden />
-                              {date.day} {date.month} · {date.time}
+                              <Clock className="w-3.5 h-3.5 shrink-0" aria-hidden />
+                              {date.time}
                             </span>
                             {event.price !== null && (
                               <span>{event.price === 0 ? "Gratuit" : formatPrice(event.price)}</span>

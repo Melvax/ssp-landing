@@ -48,7 +48,7 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
       className="relative z-20 order-first flex flex-1 items-center justify-center w-full px-6 md:px-8 py-4"
     >
       <div
-        className="w-full lg:max-w-3xl"
+        className="w-full md:max-w-xl lg:max-w-2xl"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onFocusCapture={() => setIsPaused(true)}
@@ -91,7 +91,7 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
                         aria-label={`Voir le détail de ${event.title}`}
                         className="absolute inset-0 z-10 rounded-2xl cursor-pointer"
                       />
-                      <div className="relative h-[clamp(8rem,calc(100dvh-31rem),22rem)] md:h-[clamp(8rem,calc(100dvh-30rem),26rem)] lg:h-[clamp(10rem,calc(100dvh-35rem),30rem)] rounded-2xl overflow-hidden bg-black/40">
+                      <div className="relative h-[clamp(8rem,calc(100dvh-34rem),19rem)] md:h-[clamp(8rem,calc(100dvh-33rem),22rem)] lg:h-[clamp(10rem,calc(100dvh-38rem),26rem)] rounded-2xl overflow-hidden bg-black/40">
                         <img
                           src={event.image}
                           alt=""

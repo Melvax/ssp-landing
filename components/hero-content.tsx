@@ -6,7 +6,7 @@ export default function HeroContent() {
   return (
     <main className="relative z-20 max-w-lg mx-6 md:mx-8 mb-8">
       <div className="text-left">
-        <h1 className="text-[clamp(1.5rem,7.5vw,2.25rem)] leading-tight md:text-5xl md:leading-14 tracking-tight font-light text-white mb-4">
+        <h1 className="text-[clamp(1.375rem,6.5vw,1.875rem)] leading-tight md:text-4xl tracking-tight font-light text-white mb-4">
           Le <span className="font-medium italic instrument">Rendez-vous</span> des
           <br />
           <span className="font-light tracking-tight text-white">Beatmakers</span>

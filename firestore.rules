@@ -29,8 +29,8 @@ service cloud.firestore {
     }
 
     function isValidEvent(event) {
-      return event.keys().hasOnly(['title', 'description', 'startsAt', 'image', 'imagePath', 'signupUrl',
-          'price', 'memberDiscountPercent', 'published'])
+      return event.keys().hasOnly(['title', 'description', 'startsAt', 'image', 'imagePath', 'location',
+          'signupUrl', 'price', 'memberDiscountPercent', 'published'])
         && event.keys().hasAll(['title', 'description', 'startsAt', 'image', 'imagePath', 'published'])
         && event.title is string && event.title.size() > 0 && event.title.size() <= 120
         && event.description is string && event.description.size() > 0 && event.description.size() <= 5000
@@ -38,6 +38,8 @@ service cloud.firestore {
         && event.image is string && event.image.matches('^https?://.+')
         && event.imagePath is string && event.imagePath.matches('^landing-events/[^/]+$')
         && event.published is bool
+        && (!('location' in event) || event.location == null
+          || (event.location is string && event.location.size() > 0 && event.location.size() <= 120))
         && (!('signupUrl' in event) || event.signupUrl == null
           || (event.signupUrl is string && event.signupUrl.matches('^https?://.+')))
         && (!('price' in event) || event.price == null || (event.price is number && event.price >= 0))

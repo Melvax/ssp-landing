@@ -1,14 +1,12 @@
 "use client"
 
 import { useEffect, useRef, useState, type MouseEvent } from "react"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import { useReducedMotion } from "framer-motion"
+import { ArrowLeft, ArrowRight, Clock, MapPin } from "lucide-react"
 import EventOverlay from "@/components/event-overlay"
-import EventPrice from "@/components/event-price"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
-import { formatEventDate, type UpcomingEvent } from "@/lib/events"
+import { formatPrice, getEventDateParts, type UpcomingEvent } from "@/lib/events"
 import { cn } from "@/lib/utils"
-
-const AUTOPLAY_DELAY = 6000
 
 export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) {
   const [api, setApi] = useState<CarouselApi>()
@@ -16,6 +14,7 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
   const [isPaused, setIsPaused] = useState(false)
   const [openEvent, setOpenEvent] = useState<UpcomingEvent | null>(null)
   const [overlayOrigin, setOverlayOrigin] = useState({ x: 0, y: 0 })
+  const reduceMotion = useReducedMotion()
   const openedFrom = useRef<HTMLButtonElement | null>(null)
 
   const openOverlay = (event: UpcomingEvent, click: MouseEvent<HTMLButtonElement>) => {
@@ -40,13 +39,6 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
     }
   }, [api])
 
-  useEffect(() => {
-    if (!api || isPaused || openEvent || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-
-    const interval = setInterval(() => api.scrollNext(), AUTOPLAY_DELAY)
-    return () => clearInterval(interval)
-  }, [api, isPaused, openEvent, selectedIndex])
-
   if (events.length === 0) return null
 
   return (
@@ -68,26 +60,10 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
 
             {events.length > 1 && (
               <div className="flex items-center gap-1">
-                {events.map((event, index) => (
-                  <button
-                    key={event.id}
-                    onClick={() => api?.scrollTo(index)}
-                    aria-label={`Voir ${event.title}`}
-                    aria-current={index === selectedIndex}
-                    className="flex items-center justify-center w-6 h-6 cursor-pointer"
-                  >
-                    <span
-                      className={cn(
-                        "w-1.5 h-1.5 rounded-full transition-colors duration-200",
-                        index === selectedIndex ? "bg-white" : "bg-white/30",
-                      )}
-                    />
-                  </button>
-                ))}
                 <button
                   onClick={() => api?.scrollPrev()}
                   aria-label="Événement précédent"
-                  className="ml-2 p-2 rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 cursor-pointer"
+                  className="p-2 rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
                 </button>
@@ -102,42 +78,89 @@ export default function EventsCarousel({ events }: { events: UpcomingEvent[] }) 
             )}
           </div>
 
-          <CarouselContent>
-            {events.map((event) => (
-              <CarouselItem key={event.id}>
-                <article className="group relative grid md:grid-cols-2 h-[clamp(9rem,26dvh,14rem)] md:h-[clamp(9rem,26dvh,16rem)] lg:h-[clamp(9rem,calc(100dvh-30rem),24rem)] rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 bg-black/40 backdrop-blur-md transition-colors duration-200">
-                  <button
-                    onClick={(click) => openOverlay(event, click)}
-                    aria-label={`Voir le détail de ${event.title}`}
-                    className="absolute inset-0 z-10 rounded-2xl cursor-pointer"
-                  />
-                  <div className="absolute inset-0 md:relative overflow-hidden">
-                    <img
-                      src={event.image}
-                      alt=""
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/10 md:hidden" />
-                  </div>
+          <div className="rounded-3xl border border-white/10 hover:border-white/20 bg-gradient-to-br from-neutral-700/50 via-neutral-900/60 to-black/70 backdrop-blur-md p-2 md:p-3 shadow-2xl transition-colors duration-200">
+            <CarouselContent>
+              {events.map((event) => {
+                const date = getEventDateParts(event.startsAt)
 
-                  <div className="relative flex flex-col justify-end md:justify-center p-5 md:p-8 lg:p-6">
-                    <p className="text-white/80 text-xs mb-2 first-letter:uppercase">
-                      {formatEventDate(event.startsAt)}
-                    </p>
-                    <h2 className="text-white text-2xl md:text-4xl lg:text-3xl font-light tracking-tight mb-2 line-clamp-1 instrument">
-                      {event.title}
-                    </h2>
-                    <div className="mb-2 empty:hidden">
-                      <EventPrice event={event} />
-                    </div>
-                    <p className="text-white/70 text-xs md:text-sm font-light leading-relaxed line-clamp-2 [@media(max-height:700px)]:hidden">
-                      {event.description}
-                    </p>
-                  </div>
-                </article>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
+                return (
+                  <CarouselItem key={event.id}>
+                    <article className="group relative">
+                      <button
+                        onClick={(click) => openOverlay(event, click)}
+                        aria-label={`Voir le détail de ${event.title}`}
+                        className="absolute inset-0 z-10 rounded-2xl cursor-pointer"
+                      />
+                      <div className="relative h-[clamp(6rem,calc(100dvh-38rem),16rem)] md:h-[clamp(6rem,calc(100dvh-36rem),20rem)] lg:h-[clamp(8rem,calc(100dvh-40rem),22rem)] rounded-2xl overflow-hidden bg-black/40">
+                        <img
+                          src={event.image}
+                          alt=""
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+
+                      <div className="flex items-center gap-4 px-2 pt-4 pb-2 md:px-4">
+                        <div className="flex flex-col items-center justify-center shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-xl bg-white text-black shadow-sm">
+                          <span className="text-xs md:text-sm leading-none first-letter:uppercase">{date.weekday}</span>
+                          <span className="text-2xl md:text-3xl font-medium leading-tight">{date.day}</span>
+                        </div>
+                        <div className="min-w-0">
+                          <h2 className="text-white text-lg md:text-2xl font-medium tracking-tight line-clamp-1">
+                            {event.title}
+                          </h2>
+                          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-white/80 text-xs md:text-sm">
+                            {event.location && (
+                              <span className="flex items-center gap-1 min-w-0">
+                                <MapPin className="w-4 h-4 shrink-0" aria-hidden />
+                                <span className="truncate">{event.location}</span>
+                              </span>
+                            )}
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-4 h-4 shrink-0" aria-hidden />
+                              {date.day} {date.month} · {date.time}
+                            </span>
+                            {event.price !== null && (
+                              <span>{event.price === 0 ? "Gratuit" : formatPrice(event.price)}</span>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    </article>
+                  </CarouselItem>
+                )
+              })}
+            </CarouselContent>
+
+            {events.length > 1 && (
+              <div className="flex gap-2 px-2 md:px-4">
+                {events.map((event, index) => (
+                  <button
+                    key={event.id}
+                    onClick={() => api?.scrollTo(index)}
+                    aria-label={`Voir ${event.title}`}
+                    aria-current={index === selectedIndex}
+                    className="flex-1 py-2 cursor-pointer"
+                  >
+                    <span className="relative block h-[3px] rounded-full bg-white/25 overflow-hidden">
+                      <span
+                        key={index === selectedIndex ? `active-${selectedIndex}` : index}
+                        onAnimationEnd={() => api?.scrollNext()}
+                        className={cn(
+                          "absolute inset-0 origin-left rounded-full bg-white",
+                          index === selectedIndex && !reduceMotion && "animate-event-progress",
+                        )}
+                        style={
+                          index === selectedIndex && !reduceMotion
+                            ? { animationPlayState: isPaused || openEvent ? "paused" : "running" }
+                            : { transform: `scaleX(${index <= selectedIndex ? 1 : 0})` }
+                        }
+                      />
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </Carousel>
       </div>
 

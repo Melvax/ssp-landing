@@ -11,6 +11,7 @@ export interface UpcomingEvent {
   startsAt: string
   image: string
   imagePath: string
+  location: string | null
   signupUrl: string | null
   price: number | null
   memberDiscountPercent: number | null
@@ -27,6 +28,7 @@ export function toUpcomingEvent(snapshot: QueryDocumentSnapshot<DocumentData>): 
     startsAt: data.startsAt.toDate().toISOString(),
     image: data.image,
     imagePath: data.imagePath,
+    location: data.location ?? null,
     signupUrl: data.signupUrl ?? null,
     price: data.price ?? null,
     memberDiscountPercent: data.memberDiscountPercent ?? null,
@@ -61,6 +63,26 @@ export function formatEventDate(startsAt: string) {
     minute: "2-digit",
     timeZone: "Europe/Paris",
   }).format(new Date(startsAt))
+}
+
+// Morceaux de date du badge des cartes : « Ven. », « 6 », « nov. », « 20:00 ».
+export function getEventDateParts(startsAt: string) {
+  const parts = new Intl.DateTimeFormat("fr-FR", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Paris",
+  }).formatToParts(new Date(startsAt))
+  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((item) => item.type === type)?.value ?? ""
+
+  return {
+    weekday: part("weekday"),
+    day: part("day"),
+    month: part("month"),
+    time: `${part("hour")}:${part("minute")}`,
+  }
 }
 
 export function formatPrice(price: number) {

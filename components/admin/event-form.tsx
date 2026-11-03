@@ -31,6 +31,7 @@ export default function EventForm({ event, onCancel, onSaved }: EventFormProps) 
   const [title, setTitle] = useState(event?.title ?? "")
   const [description, setDescription] = useState(event?.description ?? "")
   const [startsAt, setStartsAt] = useState(event ? toDateTimeInput(event.startsAt) : "")
+  const [location, setLocation] = useState(event?.location ?? "")
   const [signupUrl, setSignupUrl] = useState(event?.signupUrl ?? "")
   const [price, setPrice] = useState(event?.price?.toString() ?? "")
   const [discount, setDiscount] = useState(event?.memberDiscountPercent?.toString() ?? "")
@@ -97,6 +98,7 @@ export default function EventForm({ event, onCancel, onSaved }: EventFormProps) 
         startsAt: Timestamp.fromDate(new Date(startsAt)),
         image,
         imagePath,
+        location: location.trim() || null,
         signupUrl: signupUrl.trim() || null,
         price: priceValue,
         memberDiscountPercent: discountValue,
@@ -163,6 +165,17 @@ export default function EventForm({ event, onCancel, onSaved }: EventFormProps) 
           required
           value={startsAt}
           onChange={(changeEvent) => setStartsAt(changeEvent.target.value)}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="location">Lieu</Label>
+        <Input
+          id="location"
+          maxLength={120}
+          placeholder="La Petite Halle"
+          value={location}
+          onChange={(changeEvent) => setLocation(changeEvent.target.value)}
         />
       </div>
 

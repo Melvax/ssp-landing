@@ -139,3 +139,17 @@
 .instrument {
   font-family: var(--font-instrument-serif);
 }
+
+/* Barre de progression du carousel d'événements : sa fin déclenche l'événement suivant. */
+@theme {
+  --animate-event-progress: event-progress 6s linear forwards;
+
+  @keyframes event-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}

@@ -61,6 +61,7 @@ export default function EventOverlay({ event, origin, onClose, onCloseAutoFocus 
                 >
                   <p className="text-white/70 text-sm mb-2 first-letter:uppercase">
                     {formatEventDate(event.startsAt)}
+                    {event.location && ` · ${event.location}`}
                   </p>
                   <Dialog.Title className="text-white text-4xl md:text-5xl font-light tracking-tight mb-4 instrument">
                     {event.title}

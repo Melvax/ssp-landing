@@ -4,7 +4,6 @@ import { Figtree } from "next/font/google"
 import { GeistMono } from "geist/font/mono"
 import { Instrument_Serif } from "next/font/google"
 import "./globals.css"
-import JsonLd from "./json-ld"
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -21,33 +20,40 @@ const instrumentSerif = Instrument_Serif({
   display: "swap",
 })
 
+const title = "SuperSample Paris – Collectif de beatmakers à Paris"
+const description =
+  "Collectif de beatmakers à Paris : workshops beatmaking gratuits chaque dimanche, Open Live Beats, jams et soirées pour mettre en lumière les beatmakers parisiens."
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://supersample.paris"),
-  title: "SuperSample Paris | Collectif Beatmaking & Production",
-  description:
-    "Rejoins SuperSample Paris — ateliers hebdomadaires, sessions live et événements communautaires pour producteurs et beatmakers à Paris.",
+  title,
+  description,
   keywords: [
+    "beatmaker paris",
     "beatmaking paris",
-    "production musicale",
+    "atelier beatmaking paris",
+    "workshop beatmaking gratuit",
+    "collectif beatmakers",
+    "production musicale paris",
     "mao paris",
-    "ableton user group",
-    "ateliers musique électronique",
-    "supersample",
-    "événement beatmaker",
-    "sound design paris",
+    "open live beats",
+    "supersample paris",
   ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "SuperSample Paris | Collectif Beatmaking",
-    description: "La communauté des producteurs et beatmakers à Paris. Ateliers chaque dimanche.",
-    url: "https://supersample.paris",
+    title,
+    description,
+    url: "/",
     siteName: "SuperSample Paris",
     locale: "fr_FR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SuperSample Paris",
-    description: "Collectif et ateliers beatmaking à Paris.",
+    title,
+    description,
   },
   robots: {
     index: true,
@@ -60,7 +66,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  generator: "v0.app",
 }
 
 export default function RootLayout({
@@ -81,7 +86,6 @@ html {
         `}</style>
       </head>
       <body className={`${figtree.variable} ${instrumentSerif.variable}`}>
-        <JsonLd />
         {children}
       </body>
     </html>
